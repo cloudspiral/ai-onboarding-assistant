@@ -22,4 +22,22 @@ RSpec.describe "Bookings", type: :request do
     expect(JSON.parse(response.body).dig("error", "code")).to eq("slot_taken")
     expect(Booking.where(appointment_slot: slot).count).to eq(1)
   end
+
+  it "shows only the next nine future slots and rejects a past booking" do
+    past = AppointmentSlot.create!(starts_at: 1.hour.ago)
+    future = 10.times.map { |index| AppointmentSlot.create!(starts_at: (index + 1).hours.from_now) }
+    user_id = SecureRandom.uuid
+
+    get "/api/appointment_slots", headers: { "X-Demo-User-Id" => user_id }
+
+    expect(response).to have_http_status(:ok)
+    payload = JSON.parse(response.body).fetch("slots")
+    expect(payload.length).to eq(9)
+    expect(payload.pluck("id")).not_to include(past.id)
+    expect(payload.pluck("id")).to eq(future.first(9).map(&:id))
+
+    post "/api/booking", params: { appointment_slot_id: past.id }, headers: { "X-Demo-User-Id" => user_id }, as: :json
+    expect(response).to have_http_status(:unprocessable_content)
+    expect(JSON.parse(response.body).dig("error", "code")).to eq("slot_unavailable")
+  end
 end

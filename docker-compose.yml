@@ -29,7 +29,7 @@ services:
       ARTIFACT_DIR: /docs
       RAILS_LOG_TO_STDOUT: "true"
       RAILS_MAX_THREADS: "20"
-    command: sh -lc "bundle exec rails db:prepare && bundle exec rails server -b 0.0.0.0 -p 3001 -P /tmp/harbor-api.pid"
+    command: sh -lc "bundle exec rails db:prepare && RAILS_ENV=test bundle exec rails db:prepare && bundle exec rails server -b 0.0.0.0 -p 3001 -P /tmp/harbor-api.pid"
     depends_on:
       db:
         condition: service_healthy
@@ -37,6 +37,7 @@ services:
       - "3001:3001"
     volumes:
       - ./apps/api:/rails
+      - ./apps/web/public:/web/public
       - ./docs:/docs
       - harbor-bundle:/usr/local/bundle
 
@@ -45,7 +46,7 @@ services:
     working_dir: /app
     environment:
       NEXT_PUBLIC_API_ORIGIN: http://localhost:3001
-    command: sh -lc "npm install && npm run dev"
+    command: sh -lc "npm install --no-package-lock && npm run dev"
     depends_on:
       - api
     ports:

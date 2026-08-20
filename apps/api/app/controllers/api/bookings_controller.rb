@@ -11,6 +11,7 @@ module Api
       booking = nil
       AppointmentSlot.transaction do
         slot = AppointmentSlot.lock.find(params.require(:appointment_slot_id))
+        raise SlotUnavailable unless slot.starts_at.future?
         raise SlotTaken if slot.booking.present?
 
         onboarding_session.booking&.destroy!
@@ -21,6 +22,8 @@ module Api
       render json: { booking: booking.public_payload }, status: :created
     rescue SlotTaken, ActiveRecord::RecordNotUnique
       render json: { error: { code: "slot_taken", message: "That time was just booked. Please choose another opening." } }, status: :conflict
+    rescue SlotUnavailable
+      render json: { error: { code: "slot_unavailable", message: "That appointment time has passed. Please choose a future opening." } }, status: :unprocessable_content
     end
 
     def destroy
@@ -31,6 +34,7 @@ module Api
     private
 
     class SlotTaken < StandardError; end
+    class SlotUnavailable < StandardError; end
 
     def unique_reference
       loop do

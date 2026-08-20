@@ -65,7 +65,8 @@ docker compose exec api bundle exec bundler-audit check --update
 # Deterministic/offline golden-set evaluation
 docker compose exec api bundle exec rake ai:eval
 
-# Same evaluation with one batched live OpenAI stress-classification call
+# Same evaluation with one batched live OpenAI stress-classification call.
+# The harness gives this 21-item batch 10 seconds; product calls still use 2.8 seconds.
 docker compose exec -e EVAL_LIVE=1 api bundle exec rake ai:eval
 
 # 20-run OCR and transactional-booking benchmarks
@@ -90,12 +91,12 @@ The committed latest scorecards are in `docs/evaluation-results.json`, `docs/per
 
 Latest live evaluation on Linux/aarch64 with Tesseract 5.3.0 and `gpt-5.6-luna`:
 
-- OCR: 90/90 fields correct, 100% overall, 194 ms p95.
+- OCR: 90/90 fields correct, 100% overall, 178 ms p95.
 - Intent routing: 50/50 handled, 100% out-of-scope fallback.
 - Stress/safety: macro-F1 1.000, urgent recall 100%, zero upload-frustration or idle false positives.
 - Service benchmarks: OCR 157 ms p95; booking 4 ms p95.
-- k6: 1,180 requests, 20 VUs for 60 seconds, 0 HTTP failures, 84.81 ms p95.
-- Backend: 21 RSpec examples, 0 failures, 80.32% core line coverage.
+- k6 stability run: 3 consecutive 20-VU / 60-second runs, 3,521 requests, 0 HTTP failures, 84.74 ms worst-run p95.
+- Backend: 22 RSpec examples, 0 failures, 81.14% core line coverage.
 
 The fixture generator is deterministic:
 

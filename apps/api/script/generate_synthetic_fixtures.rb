@@ -31,6 +31,7 @@ ocr = categories.each_with_index.map do |category, index|
   command += [ "-background", "white", "-rotate", index.even? ? "1.2" : "-1.2" ] if category == "skewed"
   command += [ "-fill", "rgba(255,255,255,0.30)", "-draw", "polygon 850,0 1120,0 720,760 460,760" ] if category == "glare"
   command += [ "-blur", "0x0.45", "-contrast" ] if category == "hard"
+  command << "-strip"
   command << output
   _stdout, stderr, status = Open3.capture3(*command)
   abort("Fixture generation failed: #{stderr.lines.first}") unless status.success?

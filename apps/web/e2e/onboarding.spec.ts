@@ -1,6 +1,8 @@
 import { expect, test } from "@playwright/test";
 
 test("starts the Harbor onboarding flow with an anonymous persisted session", async ({ page }) => {
+  test.skip(Boolean(process.env.LIVE_BASE_URL), "Local contract test uses a mocked API.");
+
   await page.route("http://localhost:3001/api/onboarding", async (route) => {
     await route.fulfill({
       status: 200,

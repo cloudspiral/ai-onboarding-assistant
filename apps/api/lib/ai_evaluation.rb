@@ -11,6 +11,7 @@ class AiEvaluation
     @io = io
     @live = live
     @model_calls = 0
+    @model_failures = []
   end
 
   def run!
@@ -36,6 +37,7 @@ class AiEvaluation
       intent: intent,
       stress: stress,
       llm_calls: @model_calls,
+      llm_failures: @model_failures,
       duration_ms: elapsed_ms(started)
     }
     result[:passed] = thresholds_pass?(result)
@@ -114,7 +116,6 @@ class AiEvaluation
     if @live && ambiguous_indexes.any?
       result = classify_ambiguous(rows.values_at(*ambiguous_indexes).map { |row| row.fetch("text") })
       if result.success?
-        @model_calls += 1
         result.value.fetch("labels").each_with_index { |label, offset| predictions[ambiguous_indexes[offset]] = label }
       else
         ambiguous_indexes.each { |index| predictions[index] = "unknown" }
@@ -148,17 +149,27 @@ class AiEvaluation
   end
 
   def classify_ambiguous(texts)
-    AiClient.new.structured(
+    @model_calls += 1
+    result = AiClient.new(timeout_ms: ENV.fetch("EVAL_OPENAI_TIMEOUT_MS", "10000").to_i).structured(
       operation: "stress_eval_batch",
       instructions: "Classify each onboarding message as neutral or elevated emotional stress. Technical upload frustration alone is neutral. Preserve input order and return only the schema.",
       input: JSON.generate(texts),
       schema: {
         type: "object",
-        properties: { labels: { type: "array", items: { type: "string", enum: %w[neutral elevated] } } },
+        properties: {
+          labels: {
+            type: "array",
+            items: { type: "string", enum: %w[neutral elevated] },
+            minItems: texts.length,
+            maxItems: texts.length
+          }
+        },
         required: [ "labels" ],
         additionalProperties: false
       }
     )
+    @model_failures << result.code unless result.success?
+    result
   end
 
   def offline_stress(text)

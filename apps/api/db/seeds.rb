@@ -1,9 +1,12 @@
-slot_times = [
-  "2026-08-20 09:00", "2026-08-20 11:30", "2026-08-20 14:00",
-  "2026-08-21 10:00", "2026-08-21 13:30", "2026-08-21 16:15",
-  "2026-08-24 09:30", "2026-08-24 12:00", "2026-08-24 15:00"
+zone = Time.find_zone!("America/Chicago")
+anchor = zone.tomorrow.beginning_of_day
+slot_offsets = [
+  [ 0, 9, 0 ], [ 0, 11, 30 ], [ 0, 14, 0 ],
+  [ 1, 10, 0 ], [ 1, 13, 30 ], [ 1, 16, 15 ],
+  [ 4, 9, 30 ], [ 4, 12, 0 ], [ 4, 15, 0 ]
 ]
-slots = slot_times.map { |value| AppointmentSlot.find_or_create_by!(starts_at: Time.find_zone!("America/Chicago").parse(value)) }
+slot_times = slot_offsets.map { |days, hours, minutes| anchor + days.days + hours.hours + minutes.minutes }
+slots = slot_times.map { |value| AppointmentSlot.find_or_create_by!(starts_at: value) }
 
 120.times do |index|
   user_id = format("00000000-0000-4000-8000-%012d", index + 1)
