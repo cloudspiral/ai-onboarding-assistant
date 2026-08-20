@@ -1,4 +1,9 @@
 #!/bin/bash -e
 
+# This API does not use cookie sessions, but Rails still requires a runtime
+# secret. Generate an ephemeral one inside the container when the platform has
+# not supplied one so no additional deploy credential needs to be transferred.
+export SECRET_KEY_BASE="${SECRET_KEY_BASE:-$(ruby -rsecurerandom -e 'print SecureRandom.hex(64)')}"
+
 ./bin/rails db:prepare
 exec ./bin/rails server -b 0.0.0.0 -p "${PORT:-3001}" -P /tmp/harbor-api.pid
