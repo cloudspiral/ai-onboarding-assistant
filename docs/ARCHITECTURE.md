@@ -9,9 +9,9 @@
 
 ## Request flow
 
-1. The browser creates or restores an anonymous Supabase Auth session.
+1. The browser silently creates or restores an isolated anonymous Supabase Auth session, avoiding signup and password friction for the onboarding user. A creation hook rejects permanent-account signup; staff identities are provisioned separately.
 2. Requests carry the Supabase access token to Rails. In local development only, an `X-Demo-User-Id` fallback is enabled by `AUTH_MODE=development`.
-3. Rails verifies the JWT against the project's JWKS, then scopes all user records by the token subject. Admin access additionally requires `app_metadata.role=admin`.
+3. Rails verifies the JWT against the project's JWKS, then scopes all user records by the token subject. Admin access additionally requires `app_metadata.role=admin` and writes a PII-free access audit for allowed and denied attempts.
 4. Chat turns pass through `ChatOrchestrator`. Urgent content is handled statically; all actual model traffic passes through `AiClient`.
 5. After explicit consent, an uploaded JPEG/PNG is decoded, OCR'd locally, mapped to three fields, and immediately unlinked. Extracted fields are not persisted until the user confirms or edits them.
 6. Booking locks the selected slot and relies on unique database constraints for both slot and onboarding-session uniqueness.

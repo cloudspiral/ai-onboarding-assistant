@@ -8,7 +8,7 @@ Harbor is a privacy-conscious onboarding flow for sensitive services. A Next.js 
 - API health: [https://api-production-21140.up.railway.app/api/health](https://api-production-21140.up.railway.app/api/health)
 - Supabase project: `wnjfusxtrxyrjfvhjnxh` (dedicated to this application)
 
-The public flow creates an anonymous Supabase session automatically. The admin dashboard is at `/admin`; reviewer credentials are distributed separately and are not committed. Local development uses a clearly scoped demo identity and does not require a password.
+The public flow silently creates an isolated anonymous Supabase session: there is no signup form, password, or account decision between an anxious user and the first helpful question. The admin dashboard is at `/admin`; staff accounts are pre-provisioned, new permanent-account signups are rejected by an Auth hook, access requires a protected role claim, and each attempt receives a PII-free audit record. Reviewer credentials are distributed separately and are not committed. Local development uses a clearly scoped demo identity and does not require a password.
 
 ## Architecture
 
@@ -95,7 +95,7 @@ Latest live evaluation on Linux/aarch64 with Tesseract 5.3.0 and `gpt-5.6-luna`:
 - Stress/safety: macro-F1 1.000, urgent recall 100%, zero upload-frustration or idle false positives.
 - Service benchmarks: OCR 157 ms p95; booking 4 ms p95.
 - k6: 1,180 requests, 20 VUs for 60 seconds, 0 HTTP failures, 84.81 ms p95.
-- Backend: 18 RSpec examples, 0 failures, 82.73% core line coverage.
+- Backend: 21 RSpec examples, 0 failures, 80.32% core line coverage.
 
 The fixture generator is deterministic:
 

@@ -87,6 +87,7 @@ module Api
 
       digest = OpenSSL::HMAC.hexdigest("SHA256", Rails.application.secret_key_base, Current.user_id)
       OnboardingSession.transaction do
+        AnalyticsEvent.where(anonymous_session_id: Current.user_id).delete_all
         onboarding_session.destroy!
         DeletionAudit.create!(subject_digest: digest)
       end

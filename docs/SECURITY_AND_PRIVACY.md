@@ -6,13 +6,15 @@
 - Only full name, date of birth, and address are extracted.
 - The raw upload exists only in a request-scoped temporary file and is closed/unlinked after OCR, including error paths.
 - Partial extraction is shown as editable fields; missing values remain blank and are never fabricated.
-- Revocation and deletion remove extracted PII and stop document processing. The retained audit contains only the deletion event identifier and timestamp.
+- Revocation and deletion remove extracted PII, the onboarding record, and its pseudonymous analytics, then stop document processing. The retained audit contains only a one-way subject digest, scope, and timestamp.
 
 ## Authentication and authorization
 
 - Production uses a dedicated Supabase project and verifies access tokens against its JWKS, issuer, and audience.
+- Public users receive an anonymous session automatically; the flow does not ask them to register, choose a password, or supply identity data merely to begin.
 - Each user query is scoped to the authenticated token subject.
-- Admin analytics require `app_metadata.role=admin`; the server does not trust a browser-provided role in production.
+- Permanent staff accounts are pre-provisioned. A before-user-created Auth hook permits anonymous sessions but rejects public creation of permanent accounts.
+- Admin analytics require `app_metadata.role=admin`; the server does not trust a browser-provided role in production. Successful and denied dashboard access is audit-logged using an HMAC actor digest, action, and timestamp—never an email, name, or raw user ID.
 - Supabase tables have RLS enabled and no direct anonymous/authenticated grants. Rails is the application data boundary.
 - The header-based demo identity is restricted to non-production with `AUTH_MODE=development`.
 

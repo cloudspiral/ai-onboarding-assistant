@@ -10,9 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_20_000001) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_20_000002) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "admin_access_audits", force: :cascade do |t|
+    t.string "action", null: false
+    t.string "actor_digest", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["action", "created_at"], name: "index_admin_access_audits_on_action_and_created_at"
+    t.index ["actor_digest"], name: "index_admin_access_audits_on_actor_digest"
+  end
 
   create_table "analytics_events", force: :cascade do |t|
     t.uuid "anonymous_session_id", null: false

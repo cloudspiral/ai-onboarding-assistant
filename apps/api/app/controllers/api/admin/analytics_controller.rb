@@ -1,6 +1,7 @@
 module Api
   module Admin
     class AnalyticsController < ApplicationController
+      before_action :audit_access!
       before_action :require_admin!
 
       def show
@@ -25,6 +26,13 @@ module Api
       end
 
       private
+
+      def audit_access!
+        AdminAccessAudit.create!(
+          actor_digest: OpenSSL::HMAC.hexdigest("SHA256", Rails.application.secret_key_base, Current.user_id),
+          action: Current.role == "admin" ? "analytics_viewed" : "analytics_denied"
+        )
+      end
 
       def require_admin!
         return if Current.role == "admin"
