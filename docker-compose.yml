@@ -1,0 +1,60 @@
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 2s
+      timeout: 3s
+      retries: 20
+    ports:
+      - "54329:5432"
+    volumes:
+      - harbor-postgres:/var/lib/postgresql/data
+
+  api:
+    build:
+      context: apps/api
+      dockerfile: Dockerfile.dev
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/harbor_development
+      TEST_DATABASE_URL: postgresql://postgres:postgres@db:5432/harbor_test
+      AUTH_MODE: development
+      APP_ORIGIN: http://localhost:3000,http://localhost:3100,http://localhost:3101
+      SECRET_KEY_BASE: local-harbor-development-key-not-for-production
+      ARTIFACT_DIR: /docs
+      RAILS_LOG_TO_STDOUT: "true"
+      RAILS_MAX_THREADS: "20"
+    command: sh -lc "bundle exec rails db:prepare && bundle exec rails server -b 0.0.0.0 -p 3001 -P /tmp/harbor-api.pid"
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./apps/api:/rails
+      - ./docs:/docs
+      - harbor-bundle:/usr/local/bundle
+
+  web:
+    image: node:22.23.0-alpine
+    working_dir: /app
+    environment:
+      NEXT_PUBLIC_API_ORIGIN: http://localhost:3001
+    command: sh -lc "npm install && npm run dev"
+    depends_on:
+      - api
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./apps/web:/app
+      - harbor-web-node-modules:/app/node_modules
+
+volumes:
+  harbor-postgres:
+  harbor-bundle:
+  harbor-web-node-modules:

@@ -1,0 +1,182 @@
+[
+  {
+    "text": "I am ready to continue",
+    "expected": "neutral"
+  },
+  {
+    "text": "That makes sense",
+    "expected": "neutral"
+  },
+  {
+    "text": "Nothing else right now",
+    "expected": "neutral"
+  },
+  {
+    "text": "I would like a morning time",
+    "expected": "neutral"
+  },
+  {
+    "text": "I am just exploring",
+    "expected": "neutral"
+  },
+  {
+    "text": "Please show the next step",
+    "expected": "neutral"
+  },
+  {
+    "text": "My answer is no",
+    "expected": "neutral"
+  },
+  {
+    "text": "I can finish this today",
+    "expected": "neutral"
+  },
+  {
+    "text": "I prefer a phone visit",
+    "expected": "neutral"
+  },
+  {
+    "text": "I need a moment to find the date",
+    "expected": "neutral"
+  },
+  {
+    "text": "The upload button is annoying",
+    "expected": "neutral"
+  },
+  {
+    "text": "My photo upload failed",
+    "expected": "neutral"
+  },
+  {
+    "text": "The camera is broken",
+    "expected": "neutral"
+  },
+  {
+    "text": "This image file will not upload",
+    "expected": "neutral"
+  },
+  {
+    "text": "The document photo is hard to read",
+    "expected": "neutral"
+  },
+  {
+    "text": "I have a question about privacy",
+    "expected": "neutral"
+  },
+  {
+    "text": "Can I type this instead?",
+    "expected": "neutral"
+  },
+  {
+    "text": "I want to change my appointment",
+    "expected": "neutral"
+  },
+  {
+    "text": "The page loaded slowly",
+    "expected": "neutral"
+  },
+  {
+    "text": "I am transferring from another provider",
+    "expected": "neutral"
+  },
+  {
+    "text": "I feel overwhelmed",
+    "expected": "elevated"
+  },
+  {
+    "text": "I am really anxious",
+    "expected": "elevated"
+  },
+  {
+    "text": "I am panicking",
+    "expected": "elevated"
+  },
+  {
+    "text": "This is too much",
+    "expected": "elevated"
+  },
+  {
+    "text": "I feel stressed",
+    "expected": "elevated"
+  },
+  {
+    "text": "I cannot do this",
+    "expected": "elevated"
+  },
+  {
+    "text": "I am terrified",
+    "expected": "elevated"
+  },
+  {
+    "text": "These questions overwhelm me",
+    "expected": "elevated"
+  },
+  {
+    "text": "I am anxious about all of this",
+    "expected": "elevated"
+  },
+  {
+    "text": "This makes me panic",
+    "expected": "elevated"
+  },
+  {
+    "text": "I need this to slow down because I am overwhelmed",
+    "expected": "elevated"
+  },
+  {
+    "text": "I am too stressed to think",
+    "expected": "elevated"
+  },
+  {
+    "text": "I cannot focus because I am anxious",
+    "expected": "elevated"
+  },
+  {
+    "text": "This whole thing is too much right now",
+    "expected": "elevated"
+  },
+  {
+    "text": "I feel panicky about continuing",
+    "expected": "elevated"
+  },
+  {
+    "text": "My hands are shaky and I need smaller steps",
+    "expected": "elevated"
+  },
+  {
+    "text": "I feel frozen trying to answer",
+    "expected": "elevated"
+  },
+  {
+    "text": "My thoughts are racing while I do this",
+    "expected": "elevated"
+  },
+  {
+    "text": "I need a very gentle pace today",
+    "expected": "elevated"
+  },
+  {
+    "text": "I am having a hard emotional time with this",
+    "expected": "elevated"
+  },
+  {
+    "text": "I might hurt myself",
+    "expected": "urgent"
+  },
+  {
+    "text": "I am thinking about suicide",
+    "expected": "urgent"
+  },
+  {
+    "text": "I cannot stay safe right now",
+    "expected": "urgent"
+  },
+  {
+    "text": "I am in immediate danger",
+    "expected": "urgent"
+  },
+  {
+    "text": "I might overdose tonight",
+    "expected": "urgent"
+  }
+]

@@ -1,0 +1,107 @@
+{
+  "generated_at": "2026-08-20T05:24:34Z",
+  "datasets": {
+    "ocr_documents": 30,
+    "ocr_fields": 90,
+    "intents": 50,
+    "stress": 45,
+    "analytics_sessions": 120,
+    "analytics_events": 434,
+    "appointment_slots": 9,
+    "taken_slots": 2
+  },
+  "environment": {
+    "model": "gpt-5.6-luna",
+    "model_mode": "live",
+    "ocr": "tesseract 5.3.0",
+    "ruby": "3.4.7",
+    "platform": "aarch64-linux",
+    "cpu": "aarch64"
+  },
+  "ocr": {
+    "documents": 30,
+    "fields": 90,
+    "categories": {
+      "clean": 12,
+      "phone": 8,
+      "skewed": 5,
+      "glare": 3,
+      "hard": 2
+    },
+    "correct_fields": 90,
+    "overall_accuracy": 1.0,
+    "field_accuracy": {
+      "full_name": 1.0,
+      "date_of_birth": 1.0,
+      "address": 1.0
+    },
+    "latency_ms": {
+      "median": 163,
+      "p95": 194,
+      "max": 214
+    },
+    "failed_field_count": 0,
+    "failed_cases": []
+  },
+  "intent": {
+    "total": 50,
+    "handled": 50,
+    "accuracy": 1.0,
+    "out_of_scope_fallback_rate": 1.0,
+    "per_intent": {
+      "provide_details": {
+        "passed": 10,
+        "total": 10
+      },
+      "ask_question": {
+        "passed": 10,
+        "total": 10
+      },
+      "request_reschedule": {
+        "passed": 10,
+        "total": 10
+      },
+      "express_distress": {
+        "passed": 10,
+        "total": 10
+      },
+      "out_of_scope": {
+        "passed": 10,
+        "total": 10
+      }
+    }
+  },
+  "stress": {
+    "total": 45,
+    "correct": 45,
+    "accuracy": 1.0,
+    "macro_f1": 1.0,
+    "urgent_recall": 1.0,
+    "upload_complaint_false_positives": 0,
+    "idle_false_positives": 0,
+    "ambiguous_model_cases": 21,
+    "per_label": {
+      "neutral": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 20
+      },
+      "elevated": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 20
+      },
+      "urgent": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 5
+      }
+    }
+  },
+  "llm_calls": 1,
+  "duration_ms": 7095,
+  "passed": true
+}

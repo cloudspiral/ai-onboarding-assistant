@@ -1,0 +1,13 @@
+.git
+.env
+.env.*
+**/node_modules
+**/.next
+**/coverage
+**/log
+**/tmp
+apps/api
+docs
+load
+supabase
+project-reqs.md

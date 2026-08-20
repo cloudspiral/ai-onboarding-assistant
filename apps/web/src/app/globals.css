@@ -1,0 +1,27 @@
+@import url("https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap");
+
+:root {
+  --cream: #faf8f3;
+  --rail: #f4f0e7;
+  --surface: #fffdf9;
+  --ink: #2e2a26;
+  --secondary: #5c5546;
+  --muted: #857b6b;
+  --violet: #7a6bb5;
+  --violet-dark: #5d4f96;
+  --violet-soft: #efecf7;
+  --border: #e7e0d2;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; min-height: 100%; background: var(--cream); color: var(--ink); }
+body { font-family: "Instrument Sans", system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+button, input { font: inherit; }
+button { cursor: pointer; }
+a { color: var(--violet-dark); }
+
+*:focus-visible { outline: 3px solid rgba(122, 107, 181, .34); outline-offset: 2px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }
+}

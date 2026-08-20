@@ -1,0 +1,4 @@
+#!/bin/bash -e
+
+./bin/rails db:prepare
+exec ./bin/rails server -b 0.0.0.0 -p "${PORT:-3001}" -P /tmp/harbor-api.pid

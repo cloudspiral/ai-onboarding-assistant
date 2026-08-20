@@ -1,0 +1,302 @@
+[
+  {
+    "id": "synthetic-id-01",
+    "category": "clean",
+    "file": "images/synthetic-id-01.png",
+    "fields": {
+      "full_name": "Avery Sample",
+      "date_of_birth": "1975-01-01",
+      "address": "100 Cedar Street, Sample City, IL 60000"
+    }
+  },
+  {
+    "id": "synthetic-id-02",
+    "category": "clean",
+    "file": "images/synthetic-id-02.png",
+    "fields": {
+      "full_name": "Jordan Demo",
+      "date_of_birth": "1976-02-02",
+      "address": "101 Willow Street, Sample City, IL 60001"
+    }
+  },
+  {
+    "id": "synthetic-id-03",
+    "category": "clean",
+    "file": "images/synthetic-id-03.png",
+    "fields": {
+      "full_name": "Casey Test",
+      "date_of_birth": "1977-03-03",
+      "address": "102 Harbor Street, Sample City, IL 60002"
+    }
+  },
+  {
+    "id": "synthetic-id-04",
+    "category": "clean",
+    "file": "images/synthetic-id-04.png",
+    "fields": {
+      "full_name": "Morgan Harbor",
+      "date_of_birth": "1978-04-04",
+      "address": "103 Juniper Street, Sample City, IL 60003"
+    }
+  },
+  {
+    "id": "synthetic-id-05",
+    "category": "clean",
+    "file": "images/synthetic-id-05.png",
+    "fields": {
+      "full_name": "Riley North",
+      "date_of_birth": "1979-05-05",
+      "address": "104 Meadow Street, Sample City, IL 60004"
+    }
+  },
+  {
+    "id": "synthetic-id-06",
+    "category": "clean",
+    "file": "images/synthetic-id-06.png",
+    "fields": {
+      "full_name": "Cameron Cedar",
+      "date_of_birth": "1980-06-06",
+      "address": "105 Linden Street, Sample City, IL 60005"
+    }
+  },
+  {
+    "id": "synthetic-id-07",
+    "category": "clean",
+    "file": "images/synthetic-id-07.png",
+    "fields": {
+      "full_name": "Quinn Vale",
+      "date_of_birth": "1981-07-07",
+      "address": "106 Walnut Street, Sample City, IL 60006"
+    }
+  },
+  {
+    "id": "synthetic-id-08",
+    "category": "clean",
+    "file": "images/synthetic-id-08.png",
+    "fields": {
+      "full_name": "Rowan Brook",
+      "date_of_birth": "1982-08-08",
+      "address": "107 Cherry Street, Sample City, IL 60007"
+    }
+  },
+  {
+    "id": "synthetic-id-09",
+    "category": "clean",
+    "file": "images/synthetic-id-09.png",
+    "fields": {
+      "full_name": "Finley West",
+      "date_of_birth": "1983-09-09",
+      "address": "108 Sunset Street, Sample City, IL 60008"
+    }
+  },
+  {
+    "id": "synthetic-id-10",
+    "category": "clean",
+    "file": "images/synthetic-id-10.png",
+    "fields": {
+      "full_name": "Skyler Lake",
+      "date_of_birth": "1984-10-10",
+      "address": "109 Spruce Street, Sample City, IL 60009"
+    }
+  },
+  {
+    "id": "synthetic-id-11",
+    "category": "clean",
+    "file": "images/synthetic-id-11.png",
+    "fields": {
+      "full_name": "Parker Stone",
+      "date_of_birth": "1985-11-11",
+      "address": "110 Cedar Street, Sample City, IL 60010"
+    }
+  },
+  {
+    "id": "synthetic-id-12",
+    "category": "clean",
+    "file": "images/synthetic-id-12.png",
+    "fields": {
+      "full_name": "Reese Grove",
+      "date_of_birth": "1986-12-12",
+      "address": "111 Willow Street, Sample City, IL 60011"
+    }
+  },
+  {
+    "id": "synthetic-id-13",
+    "category": "phone",
+    "file": "images/synthetic-id-13.png",
+    "fields": {
+      "full_name": "Taylor Field",
+      "date_of_birth": "1987-01-13",
+      "address": "112 Harbor Street, Sample City, IL 60012"
+    }
+  },
+  {
+    "id": "synthetic-id-14",
+    "category": "phone",
+    "file": "images/synthetic-id-14.png",
+    "fields": {
+      "full_name": "Sidney Ridge",
+      "date_of_birth": "1988-02-14",
+      "address": "113 Juniper Street, Sample City, IL 60013"
+    }
+  },
+  {
+    "id": "synthetic-id-15",
+    "category": "phone",
+    "file": "images/synthetic-id-15.png",
+    "fields": {
+      "full_name": "Devon Park",
+      "date_of_birth": "1989-03-15",
+      "address": "114 Meadow Street, Sample City, IL 60014"
+    }
+  },
+  {
+    "id": "synthetic-id-16",
+    "category": "phone",
+    "file": "images/synthetic-id-16.png",
+    "fields": {
+      "full_name": "Emery Coast",
+      "date_of_birth": "1990-04-16",
+      "address": "115 Linden Street, Sample City, IL 60015"
+    }
+  },
+  {
+    "id": "synthetic-id-17",
+    "category": "phone",
+    "file": "images/synthetic-id-17.png",
+    "fields": {
+      "full_name": "Arden Hill",
+      "date_of_birth": "1991-05-17",
+      "address": "116 Walnut Street, Sample City, IL 60016"
+    }
+  },
+  {
+    "id": "synthetic-id-18",
+    "category": "phone",
+    "file": "images/synthetic-id-18.png",
+    "fields": {
+      "full_name": "Blake River",
+      "date_of_birth": "1992-06-18",
+      "address": "117 Cherry Street, Sample City, IL 60017"
+    }
+  },
+  {
+    "id": "synthetic-id-19",
+    "category": "phone",
+    "file": "images/synthetic-id-19.png",
+    "fields": {
+      "full_name": "Drew Green",
+      "date_of_birth": "1993-07-19",
+      "address": "118 Sunset Street, Sample City, IL 60018"
+    }
+  },
+  {
+    "id": "synthetic-id-20",
+    "category": "phone",
+    "file": "images/synthetic-id-20.png",
+    "fields": {
+      "full_name": "Ellis Woods",
+      "date_of_birth": "1994-08-20",
+      "address": "119 Spruce Street, Sample City, IL 60019"
+    }
+  },
+  {
+    "id": "synthetic-id-21",
+    "category": "skewed",
+    "file": "images/synthetic-id-21.png",
+    "fields": {
+      "full_name": "Hayden Shore",
+      "date_of_birth": "1995-09-21",
+      "address": "120 Cedar Street, Sample City, IL 60020"
+    }
+  },
+  {
+    "id": "synthetic-id-22",
+    "category": "skewed",
+    "file": "images/synthetic-id-22.png",
+    "fields": {
+      "full_name": "Jules Plain",
+      "date_of_birth": "1996-10-22",
+      "address": "121 Willow Street, Sample City, IL 60021"
+    }
+  },
+  {
+    "id": "synthetic-id-23",
+    "category": "skewed",
+    "file": "images/synthetic-id-23.png",
+    "fields": {
+      "full_name": "Kendall Wells",
+      "date_of_birth": "1997-11-23",
+      "address": "122 Harbor Street, Sample City, IL 60022"
+    }
+  },
+  {
+    "id": "synthetic-id-24",
+    "category": "skewed",
+    "file": "images/synthetic-id-24.png",
+    "fields": {
+      "full_name": "Lane Ash",
+      "date_of_birth": "1998-12-24",
+      "address": "123 Juniper Street, Sample City, IL 60023"
+    }
+  },
+  {
+    "id": "synthetic-id-25",
+    "category": "skewed",
+    "file": "images/synthetic-id-25.png",
+    "fields": {
+      "full_name": "Marley Gray",
+      "date_of_birth": "1999-01-25",
+      "address": "124 Meadow Street, Sample City, IL 60024"
+    }
+  },
+  {
+    "id": "synthetic-id-26",
+    "category": "glare",
+    "file": "images/synthetic-id-26.png",
+    "fields": {
+      "full_name": "Noel Frost",
+      "date_of_birth": "1975-02-26",
+      "address": "125 Linden Street, Sample City, IL 60025"
+    }
+  },
+  {
+    "id": "synthetic-id-27",
+    "category": "glare",
+    "file": "images/synthetic-id-27.png",
+    "fields": {
+      "full_name": "Oakley Hart",
+      "date_of_birth": "1976-03-27",
+      "address": "126 Walnut Street, Sample City, IL 60026"
+    }
+  },
+  {
+    "id": "synthetic-id-28",
+    "category": "glare",
+    "file": "images/synthetic-id-28.png",
+    "fields": {
+      "full_name": "Peyton Bell",
+      "date_of_birth": "1977-04-01",
+      "address": "127 Cherry Street, Sample City, IL 60027"
+    }
+  },
+  {
+    "id": "synthetic-id-29",
+    "category": "hard",
+    "file": "images/synthetic-id-29.png",
+    "fields": {
+      "full_name": "Robin Moss",
+      "date_of_birth": "1978-05-02",
+      "address": "128 Sunset Street, Sample City, IL 60028"
+    }
+  },
+  {
+    "id": "synthetic-id-30",
+    "category": "hard",
+    "file": "images/synthetic-id-30.png",
+    "fields": {
+      "full_name": "Sage ",
+      "date_of_birth": "1979-06-03",
+      "address": "129 Spruce Street, Sample City, IL 60029"
+    }
+  }
+]

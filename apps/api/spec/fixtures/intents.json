@@ -1,0 +1,202 @@
+[
+  {
+    "text": "My name is Avery Sample",
+    "expected": "provide_details"
+  },
+  {
+    "text": "I am registering for the first time",
+    "expected": "provide_details"
+  },
+  {
+    "text": "I need an appointment soon",
+    "expected": "provide_details"
+  },
+  {
+    "text": "Nothing else for the team",
+    "expected": "provide_details"
+  },
+  {
+    "text": "I live in Sample City",
+    "expected": "provide_details"
+  },
+  {
+    "text": "My birthday is January fifth",
+    "expected": "provide_details"
+  },
+  {
+    "text": "I am transferring providers",
+    "expected": "provide_details"
+  },
+  {
+    "text": "Just exploring for now",
+    "expected": "provide_details"
+  },
+  {
+    "text": "Please note that mornings are best",
+    "expected": "provide_details"
+  },
+  {
+    "text": "You can call me Riley",
+    "expected": "provide_details"
+  },
+  {
+    "text": "What happens after I register?",
+    "expected": "ask_question"
+  },
+  {
+    "text": "Can I skip the photo?",
+    "expected": "ask_question"
+  },
+  {
+    "text": "How long is the visit?",
+    "expected": "ask_question"
+  },
+  {
+    "text": "Is the document image saved?",
+    "expected": "ask_question"
+  },
+  {
+    "text": "Will a person review this?",
+    "expected": "ask_question"
+  },
+  {
+    "text": "Where does my data go?",
+    "expected": "ask_question"
+  },
+  {
+    "text": "Could I type the fields instead?",
+    "expected": "ask_question"
+  },
+  {
+    "text": "Do I need to finish today?",
+    "expected": "ask_question"
+  },
+  {
+    "text": "When can I book?",
+    "expected": "ask_question"
+  },
+  {
+    "text": "Are video visits available?",
+    "expected": "ask_question"
+  },
+  {
+    "text": "I need to reschedule my appointment",
+    "expected": "request_reschedule"
+  },
+  {
+    "text": "Can I change my booking time?",
+    "expected": "request_reschedule"
+  },
+  {
+    "text": "Move my visit to another day",
+    "expected": "request_reschedule"
+  },
+  {
+    "text": "Please cancel my appointment",
+    "expected": "request_reschedule"
+  },
+  {
+    "text": "I need a different appointment",
+    "expected": "request_reschedule"
+  },
+  {
+    "text": "Change the time of my visit",
+    "expected": "request_reschedule"
+  },
+  {
+    "text": "Can we reschedule the booking?",
+    "expected": "request_reschedule"
+  },
+  {
+    "text": "I cannot make my appointment",
+    "expected": "request_reschedule"
+  },
+  {
+    "text": "Move my booking to Friday",
+    "expected": "request_reschedule"
+  },
+  {
+    "text": "Cancel this visit please",
+    "expected": "request_reschedule"
+  },
+  {
+    "text": "I feel overwhelmed",
+    "expected": "express_distress"
+  },
+  {
+    "text": "This is making me anxious",
+    "expected": "express_distress"
+  },
+  {
+    "text": "I am panicking a little",
+    "expected": "express_distress"
+  },
+  {
+    "text": "This is too much right now",
+    "expected": "express_distress"
+  },
+  {
+    "text": "I feel stressed",
+    "expected": "express_distress"
+  },
+  {
+    "text": "I cannot do this today",
+    "expected": "express_distress"
+  },
+  {
+    "text": "I am terrified about starting",
+    "expected": "express_distress"
+  },
+  {
+    "text": "I feel overwhelmed by these questions",
+    "expected": "express_distress"
+  },
+  {
+    "text": "I am anxious about the visit",
+    "expected": "express_distress"
+  },
+  {
+    "text": "This process is making me panic",
+    "expected": "express_distress"
+  },
+  {
+    "text": "What is the weather tomorrow?",
+    "expected": "out_of_scope"
+  },
+  {
+    "text": "Tell me a joke",
+    "expected": "out_of_scope"
+  },
+  {
+    "text": "What is the score of the game?",
+    "expected": "out_of_scope"
+  },
+  {
+    "text": "Give me a pasta recipe",
+    "expected": "out_of_scope"
+  },
+  {
+    "text": "Should I buy bitcoin?",
+    "expected": "out_of_scope"
+  },
+  {
+    "text": "What is the capital of France?",
+    "expected": "out_of_scope"
+  },
+  {
+    "text": "Recommend a movie",
+    "expected": "out_of_scope"
+  },
+  {
+    "text": "Play some music",
+    "expected": "out_of_scope"
+  },
+  {
+    "text": "Write code for a website",
+    "expected": "out_of_scope"
+  },
+  {
+    "text": "What stock should I buy?",
+    "expected": "out_of_scope"
+  }
+]

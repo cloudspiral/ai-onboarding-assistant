@@ -1,0 +1,6 @@
+.git
+log/*
+tmp/*
+spec/fixtures/ocr/images/*
+config/master.key
+.kamal/secrets
