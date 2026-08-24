@@ -1,15 +1,15 @@
 {
-  "generated_at": "2026-08-20T05:10:38Z",
+  "generated_at": "2026-08-24T04:54:15Z",
   "runs": 20,
   "ocr_latency_ms": {
-    "median": 147,
-    "p95": 157,
-    "max": 158
+    "median": 152,
+    "p95": 167,
+    "max": 186
   },
   "booking_latency_ms": {
     "median": 3,
-    "p95": 4,
-    "max": 11
+    "p95": 5,
+    "max": 12
   },
   "thresholds": {
     "ocr_p95_ms": 8000,

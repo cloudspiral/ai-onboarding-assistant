@@ -14,11 +14,12 @@ module Api
     end
 
     def chat
+      skip = ActiveModel::Type::Boolean.new.cast(params[:skip])
       result = ChatOrchestrator.new.call(
-        message: params.require(:message).to_s.first(2_000),
+        message: (skip ? params[:message] : params.require(:message)).to_s.first(2_000),
         field: params[:field].to_s.presence,
         session: onboarding_session,
-        calm_mode_opt_in: ActiveModel::Type::Boolean.new.cast(params[:calm_mode_opt_in])
+        skip:
       )
       return render_failure(result) unless result.success?
 

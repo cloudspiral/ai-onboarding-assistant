@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_20_000002) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_20_000003) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -84,6 +84,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_20_000002) do
 
   create_table "onboarding_sessions", force: :cascade do |t|
     t.jsonb "assessment", default: {}, null: false
+    t.boolean "calm_mode_active", default: false, null: false
     t.boolean "calm_mode_opt_in", default: false, null: false
     t.datetime "created_at", null: false
     t.string "status", default: "in_progress", null: false

@@ -21,6 +21,22 @@ RSpec.describe OcrService do
     expect(File).not_to exist(path)
   end
 
+  it "extracts the demo fields from the realistic fictional card" do
+    source = Rails.root.join("../web/public/sample-id-realistic.png").expand_path
+    tempfile = Tempfile.new([ "realistic-ocr-spec", ".png" ])
+    FileUtils.cp(source, tempfile.path)
+    upload = Upload.new(tempfile.path, tempfile.size, "image/png", "sample-id-realistic.png", tempfile)
+
+    result = described_class.new.extract(upload)
+
+    expect(result).to be_success
+    expect(result.value).to eq(
+      "full_name" => "AVERY SAMPLE",
+      "date_of_birth" => "1975-01-01",
+      "address" => "100 CEDAR STREET, SAMPLE CITY, IL 60000"
+    )
+  end
+
   it "rejects mismatched and oversized uploads with typed failures" do
     tempfile = Tempfile.new([ "not-an-image", ".png" ])
     tempfile.write("not an image")

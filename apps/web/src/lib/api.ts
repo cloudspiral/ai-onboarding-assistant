@@ -59,7 +59,7 @@ export type Onboarding = {
   step: "chat" | "details" | "booking" | "done";
   status: string;
   stress_mode: "neutral" | "elevated";
-  calm_mode_opt_in: boolean;
+  calm_mode_active: boolean;
   assessment: Record<string, string>;
   details: Details | null;
   booking: Booking | null;
@@ -75,12 +75,12 @@ export type Details = {
 
 export type Booking = { reference: string; starts_at: string; channel: string; email_sent: boolean };
 export type Slot = { id: number; starts_at: string; available: boolean };
-export type Turn = { intent?: string; stress?: "neutral" | "elevated"; level: "neutral" | "elevated" | "urgent"; assistant_reply: string; next_actions?: string[] };
+export type Turn = { intent?: string; stress?: "neutral" | "elevated"; level: "neutral" | "elevated" | "urgent"; assistant_reply: string; assessment_value?: string; calm_mode_active: boolean; next_actions?: string[] };
 
 export const api = {
   getOnboarding: () => request<{ onboarding: Onboarding }>("/api/onboarding"),
   consent: (granted: boolean) => request<{ consent: string }>("/api/onboarding/consent", { method: "POST", body: JSON.stringify({ granted }) }),
-  chat: (message: string, field?: string, calmModeOptIn = false) => request<{ turn: Turn }>("/api/onboarding/chat", { method: "POST", body: JSON.stringify({ message, field, calm_mode_opt_in: calmModeOptIn }) }),
+  chat: (message: string, field?: string, skip = false) => request<{ turn: Turn }>("/api/onboarding/chat", { method: "POST", body: JSON.stringify({ message, field, ...(skip ? { skip: true } : {}) }) }),
   upload: (document: File) => {
     const body = new FormData();
     body.append("document", document);
