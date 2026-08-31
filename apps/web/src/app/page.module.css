@@ -42,8 +42,8 @@
 .chatInput button, .primaryButton { border: 0; border-radius: 10px; padding: 11px 18px; color: white; background: #7a6bb5; font-weight: 600; }
 .chatInput button:hover, .primaryButton:hover { background: #5d4f96; }
 .chatInput button:disabled, .primaryButton:disabled { background: #cfc5ea; cursor: not-allowed; }
-.calmToggle { display: flex; gap: 7px; margin-top: 10px; align-items: center; color: #857b6b; font-size: 12px; }
-.calmToggle input { accent-color: #7a6bb5; }
+.calmStatus { width: fit-content; margin: 12px auto 0; padding: 5px 10px; border-radius: 999px; color: #5d4f96; background: #efecf7; font-size: 12px; font-weight: 600; }
+.skipButton { display: block; margin: 8px 0 0 auto; padding: 5px 7px; border: 0; background: transparent; color: #5d4f96; font-size: 12px; text-decoration: underline; text-underline-offset: 3px; }
 .summaryCard { width: 86%; margin: 12px 0; overflow: hidden; border: 1px solid #e7e0d2; border-radius: 14px; background: white; animation: fadeUp .3s ease both; }
 .overline { padding: 10px 15px; color: #5d4f96; background: #efecf7; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; font-weight: 600; }
 .summaryRow { display: grid; grid-template-columns: 110px 1fr; padding: 10px 15px; border-bottom: 1px solid #f2ede2; font-size: 14px; }

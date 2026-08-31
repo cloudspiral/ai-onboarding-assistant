@@ -10,7 +10,7 @@ class OcrService
     validation = validate(upload)
     return validation unless validation.success?
 
-    stdout, _stderr, status = Open3.capture3("tesseract", upload.path, "stdout", "--psm", "6")
+    stdout, _stderr, status = Open3.capture3("tesseract", upload.path, "stdout", "--psm", "11")
     return Result::Failure.new(code: "ocr_unavailable", message: "We couldn't read that photo. You can try again or type your details.", retryable: true, metadata: {}) unless status.success?
 
     fields = parse(stdout)

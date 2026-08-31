@@ -24,7 +24,7 @@ services:
       DATABASE_URL: postgresql://postgres:postgres@db:5432/harbor_development
       TEST_DATABASE_URL: postgresql://postgres:postgres@db:5432/harbor_test
       AUTH_MODE: development
-      APP_ORIGIN: http://localhost:3000,http://localhost:3100,http://localhost:3101
+      APP_ORIGIN: http://localhost:3000,http://localhost:3100,http://localhost:3101,http://127.0.0.1:3100
       SECRET_KEY_BASE: local-harbor-development-key-not-for-production
       ARTIFACT_DIR: /docs
       RAILS_LOG_TO_STDOUT: "true"

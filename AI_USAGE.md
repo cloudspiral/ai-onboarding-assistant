@@ -12,13 +12,13 @@ Generated code was reviewed through the committed test, lint, security, evaluati
 - **LLM:** OpenAI Responses API with `gpt-5.6-luna`, structured JSON Schema output, `reasoning.effort=none`, low text verbosity, maximum 180 output tokens, `store=false`, a 2.8-second total deadline, and at most one retry.
 - **OCR:** local Tesseract 5.3.0, invoked by the Rails `OcrService`. Raw ID images are never sent to OpenAI.
 - **Intent routing:** deterministic, narrow policies cover the five evaluated intents. The model supplies a conversational reply and structured classification, while the deterministic policy remains the final router for evaluated behavior.
-- **Stress adaptation:** explicit urgent/elevated/upload-frustration rules take precedence. Ambiguous turns may use the model's structured `neutral`/`elevated` classification. Urgent text never goes to the model.
+- **Stress adaptation:** explicit urgent/elevated/upload-frustration rules take precedence. Ambiguous turns use the model's structured `neutral`/`elevated` classification. Elevated or urgent stress automatically activates persistent calm pacing; explicit elevated and urgent text never goes to the model.
 
 All LLM calls go through `AiClient`; no component calls OpenAI directly. `AiClient` emits PII-free structured metadata and typed results. It never logs input, output, prompt, transcript, OCR text, document contents, name, date of birth, or address.
 
 ## Material prompt and configuration choices
 
-The Wren system instruction constrains the assistant to administrative onboarding, prohibits invented bookings, policy, eligibility, or service commitments, and caps replies at two short sentences with one next step during elevated stress. Technical upload frustration is explicitly neutral unless the user also describes emotional distress. The health probe sends only a fixed synthetic message.
+The Wren system instruction constrains the assistant to administrative onboarding, prohibits invented bookings, policy, eligibility, or service commitments, and caps replies at two short sentences with one next step during elevated stress or after calm mode has activated. Technical upload frustration is explicitly neutral unless the user also describes emotional distress. The health probe sends only a fixed synthetic message.
 
 The live evaluation sends 21 synthetic, non-identifying stress examples in a single structured call. The committed offline mode evaluates the same set deterministically and needs no provider key.
 

@@ -38,7 +38,7 @@ docker compose exec api bundle exec rails db:seed
 
 Open [http://localhost:3000](http://localhost:3000). The Rails API is at [http://localhost:3001](http://localhost:3001), and its dependency health report is at [http://localhost:3001/api/health](http://localhost:3001/api/health).
 
-For the document step, use `apps/web/public/sample-id.png` or any of the 30 synthetic documents under `apps/api/spec/fixtures/ocr/images/`. Never use a real identity document in development.
+For the document step, use the clearly marked fictional card at `apps/web/public/sample-id-realistic.png` or any of the 30 synthetic documents under `apps/api/spec/fixtures/ocr/images/`. Never use a real identity document in development.
 
 To stop the app without deleting its database volume:
 
@@ -89,14 +89,14 @@ The committed latest scorecards are in `docs/evaluation-results.json`, `docs/per
 | Analytics sessions / events | 120 / 434 |
 | Appointment slots | 9 (2 pre-booked) |
 
-Latest live evaluation on Linux/aarch64 with Tesseract 5.3.0 and `gpt-5.6-luna`:
+Latest reproducible release evaluation on Linux/aarch64 with Tesseract 5.3.0 and the configured `gpt-5.6-luna` model:
 
-- OCR: 90/90 fields correct, 100% overall, 178 ms p95.
+- OCR: 90/90 fields correct, 100% overall, 173 ms p95.
 - Intent routing: 50/50 handled, 100% out-of-scope fallback.
 - Stress/safety: macro-F1 1.000, urgent recall 100%, zero upload-frustration or idle false positives.
-- Service benchmarks: OCR 157 ms p95; booking 4 ms p95.
-- k6 stability run: 3 consecutive 20-VU / 60-second runs, 3,521 requests, 0 HTTP failures, 84.74 ms worst-run p95.
-- Backend: 22 RSpec examples, 0 failures, 81.14% core line coverage.
+- Service benchmarks: OCR 167 ms p95; booking 5 ms p95.
+- k6 stability run: 20 VUs for 60 seconds, 1,180 requests, 0 HTTP failures, 80.21 ms p95.
+- Backend: 28 RSpec examples, 0 failures, 82.97% core line coverage.
 
 The fixture generator is deterministic:
 
@@ -111,8 +111,8 @@ Harbor does not diagnose emotion. It uses a narrow, testable policy:
 - Explicit imminent-danger phrases bypass the model and return a fixed U.S. 911/988 boundary.
 - Explicit stress phrases produce one small next step and offer pause/skip.
 - Upload, photo, camera, file, image, or document frustration is neutral unless emotional distress is also explicit.
-- A 10-second pause, upload failure, or uncertainty can show one contextual support card; the same card is not repeated in a session.
-- A slower persistent pace is enabled only after the user checks the calm-pacing opt-in. Otherwise adaptation applies only to the current response.
+- A 30-second pause, upload failure, or uncertainty can show one contextual support card; the same card is not repeated in a session.
+- Elevated stress automatically enables a persistent calm mode for the session. Distress text is not saved as an onboarding answer; the current question remains in place, and later turns stay limited to one small step with clear pause/skip options.
 
 The policy and trigger fixtures live in `StressPolicy`, `ChatOrchestrator`, and `spec/fixtures/stress.json`.
 

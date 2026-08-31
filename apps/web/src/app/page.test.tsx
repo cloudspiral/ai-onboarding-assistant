@@ -23,8 +23,8 @@ vi.mock("@/lib/api", () => ({
 
 describe("Harbor onboarding", () => {
   beforeEach(() => {
-    mocks.getOnboarding.mockResolvedValue({ onboarding: { step: "chat", status: "in_progress", stress_mode: "neutral", calm_mode_opt_in: false, assessment: {}, details: null, booking: null } });
-    mocks.chat.mockResolvedValue({ turn: { intent: "provide_details", stress: "neutral", level: "neutral", assistant_reply: "Thanks" } });
+    mocks.getOnboarding.mockResolvedValue({ onboarding: { step: "chat", status: "in_progress", stress_mode: "neutral", calm_mode_active: false, assessment: {}, details: null, booking: null } });
+    mocks.chat.mockResolvedValue({ turn: { intent: "provide_details", stress: "neutral", level: "neutral", assistant_reply: "Thanks", calm_mode_active: false } });
   });
 
   it("renders an accessible first step with clear progress and input labeling", async () => {
@@ -41,8 +41,32 @@ describe("Harbor onboarding", () => {
     const user = userEvent.setup();
     await user.type(await screen.findByPlaceholderText("Type your name…"), "Avery");
     await user.click(screen.getByRole("button", { name: "Send" }));
-    await waitFor(() => expect(screen.getByText("What brings you to Harbor today?")).toBeInTheDocument(), { timeout: 2_000 });
+    await waitFor(() => expect(screen.getByText(/What brings you to Harbor today\?/)).toBeInTheDocument(), { timeout: 2_000 });
     expect(mocks.chat).toHaveBeenCalledWith("Avery", "name", false);
+  });
+
+  it("automatically activates gentle pacing when the assistant detects elevated stress", async () => {
+    mocks.chat
+      .mockResolvedValueOnce({ turn: { intent: "express_distress", stress: "elevated", level: "elevated", assistant_reply: "Thank you for telling me. We can take one small step, pause, or skip.", calm_mode_active: true } })
+      .mockRejectedValueOnce(new Error("temporary network failure"))
+      .mockResolvedValueOnce({ turn: { intent: "skip_question", stress: "elevated", level: "elevated", assistant_reply: "That’s okay. We’ll leave this for a specialist and move to the next small step.", assessment_value: "Complete with specialist", calm_mode_active: true } });
+    render(<Home />);
+    const user = userEvent.setup();
+    await user.type(await screen.findByPlaceholderText("Type your name…"), "I need a moment");
+    await user.click(screen.getByRole("button", { name: "Send" }));
+
+    expect(await screen.findByText("Gentle pace is on")).toBeInTheDocument();
+    expect(screen.getByText(/We can take one small step, pause, or skip/)).toBeInTheDocument();
+    expect(screen.getByPlaceholderText("Type your name…")).not.toBeDisabled();
+    expect(screen.getByRole("button", { name: "Skip this question" })).toBeInTheDocument();
+    expect(screen.queryByText("Keep the gentler, one-step-at-a-time pace")).not.toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: "Skip this question" }));
+    expect(await screen.findByRole("alert")).toHaveTextContent("Assistant unavailable");
+    await user.click(screen.getByRole("button", { name: "Retry" }));
+    await waitFor(() => expect(screen.getByText(/What brings you to Harbor today\?/)).toBeInTheDocument(), { timeout: 2_000 });
+    expect(mocks.chat).toHaveBeenLastCalledWith("I’d like to skip this question.", "name", true);
+    expect(screen.queryByText(/Noted — I’d like to skip/)).not.toBeInTheDocument();
   });
 
   it("shows retry and manual continuation when the provider fails", async () => {

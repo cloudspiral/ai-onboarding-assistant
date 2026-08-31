@@ -8,6 +8,7 @@ RSpec.describe "Intent and stress policies" do
 
   it "does not treat upload frustration as emotional stress" do
     expect(StressPolicy.explicit_level("My photo upload failed and the button is annoying")).to eq("neutral")
+    expect(StressPolicy.explicit_level("My photo upload failed and I feel overwhelmed")).to eq("elevated")
   end
 
   it "detects explicit elevated and urgent language conservatively" do

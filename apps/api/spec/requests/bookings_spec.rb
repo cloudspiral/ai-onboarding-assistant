@@ -1,6 +1,11 @@
 require "rails_helper"
 
 RSpec.describe "Bookings", type: :request do
+  before do
+    Booking.delete_all
+    AppointmentSlot.delete_all
+  end
+
   around do |example|
     original = ENV["AUTH_MODE"]
     ENV["AUTH_MODE"] = "development"

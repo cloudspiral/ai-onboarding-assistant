@@ -54,6 +54,7 @@ export default function Home() {
   const [assessment, setAssessment] = useState<Record<string, string>>({});
   const [details, setDetails] = useState<Details | null>(null);
   const [booking, setBooking] = useState<Booking | null>(null);
+  const [calmModeActive, setCalmModeActive] = useState(false);
   const [support, setSupport] = useState<Support | null>(null);
   const [, setSeenSupport] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(true);
@@ -74,6 +75,7 @@ export default function Home() {
         setAssessment(onboarding.assessment ?? {});
         setDetails(onboarding.details);
         setBooking(onboarding.booking);
+        setCalmModeActive(onboarding.calm_mode_active);
       })
       .catch(() => undefined)
       .finally(() => setLoading(false));
@@ -99,7 +101,7 @@ export default function Home() {
         <StepRail step={step} />
         <main className={styles.main}>
           {deleted ? <Deleted onStartOver={startOver} /> : <>
-            {step === "chat" && <Chat assessment={assessment} setAssessment={setAssessment} onContinue={() => setStep("details")} showSupport={showSupport} />}
+            {step === "chat" && <Chat assessment={assessment} setAssessment={setAssessment} initialCalmModeActive={calmModeActive} onContinue={() => setStep("details")} showSupport={showSupport} />}
             {step === "details" && <DocumentStep existing={details} onSaved={finishDetails} showSupport={showSupport} />}
             {step === "booking" && <BookingStep current={booking} onBooked={finishBooking} />}
             {step === "done" && details && booking && <Done assessment={assessment} details={details} booking={booking} onDelete={deleteEverything} />}
@@ -123,48 +125,58 @@ function StepRail({ step }: { step: Step }) {
   })}</ol><div className={styles.railFooter}>Your answers stay private.<br /><a href="/privacy">How we handle your data</a></div></aside>;
 }
 
-function Chat({ assessment, setAssessment, onContinue, showSupport }: { assessment: Record<string, string>; setAssessment: (value: Record<string, string>) => void; onContinue: () => void; showSupport: (kind: keyof typeof SUPPORT) => void }) {
+function Chat({ assessment, setAssessment, initialCalmModeActive, onContinue, showSupport }: { assessment: Record<string, string>; setAssessment: (value: Record<string, string>) => void; initialCalmModeActive: boolean; onContinue: () => void; showSupport: (kind: keyof typeof SUPPORT) => void }) {
   const completed = FIELDS.filter((field) => assessment[field]).length;
   const [qIndex, setQIndex] = useState(Math.min(completed, 4));
   const [messages, setMessages] = useState<Message[]>(() => completed ? [...initialMessages, message("assistant", "Welcome back. Your earlier answers are saved — we can continue where you left off."), ...(completed < 4 ? [message("assistant", QUESTIONS[completed])] : [])] : initialMessages);
   const [draft, setDraft] = useState("");
   const [typing, setTyping] = useState(false);
   const [providerError, setProviderError] = useState<ApiError | null>(null);
-  const [calmMode, setCalmMode] = useState(false);
+  const [lastAttempt, setLastAttempt] = useState<{ answer: string; skip: boolean } | null>(null);
+  const [calmModeActive, setCalmModeActive] = useState(initialCalmModeActive);
   const transcript = useRef<HTMLDivElement>(null);
 
   useEffect(() => { if (transcript.current) transcript.current.scrollTop = transcript.current.scrollHeight; }, [messages, typing, providerError]);
   useEffect(() => { if (qIndex >= 4 || typing) return; const timer = window.setTimeout(() => showSupport("idle"), 30_000); return () => window.clearTimeout(timer); }, [qIndex, typing, showSupport]);
 
-  const submit = async (answer: string) => {
-    if (!answer.trim() || typing || qIndex >= 4) return;
-    setProviderError(null); setDraft(""); setMessages((current) => [...current, message("user", answer.trim())]); setTyping(true);
-    if (answer === "I’m not sure where to start") showSupport("uncertain");
-    if (answer === "I’m feeling a bit overwhelmed") showSupport("elevated");
+  const submit = async (answer: string, skip = false) => {
+    const displayedAnswer = skip ? "I’d like to skip this question." : answer.trim();
+    if (!displayedAnswer || typing || qIndex >= 4) return;
+    setLastAttempt({ answer: displayedAnswer, skip });
+    setProviderError(null); setDraft(""); setMessages((current) => [...current, message("user", displayedAnswer)]); setTyping(true);
+    if (displayedAnswer === "I’m not sure where to start") showSupport("uncertain");
     try {
-      const { turn } = await api.chat(answer.trim(), FIELDS[qIndex], calmMode);
+      const { turn } = await api.chat(displayedAnswer, FIELDS[qIndex], skip);
       await new Promise((resolve) => window.setTimeout(resolve, 500));
+      if (turn.calm_mode_active && !calmModeActive) { setCalmModeActive(true); showSupport("elevated"); }
       if (turn.level === "urgent") { setMessages((current) => [...current, message("assistant", turn.assistant_reply)]); return; }
+      if (turn.intent === "express_distress") { setMessages((current) => [...current, message("assistant", turn.assistant_reply)]); return; }
       if (turn.intent === "out_of_scope" && qIndex > 0) { setMessages((current) => [...current, message("assistant", "I may not have understood that — I’m best with questions about getting set up here. If you’d rather talk to a person, you can book that in a couple of steps. For now, one of the options below works best.")]); return; }
-      const nextAssessment = { ...assessment, [FIELDS[qIndex]]: answer.trim() };
+      const recordedAnswer = turn.intent === "skip_question" ? turn.assessment_value ?? "Complete with specialist" : displayedAnswer;
+      const nextAssessment = { ...assessment, [FIELDS[qIndex]]: recordedAnswer };
       setAssessment(nextAssessment);
       const next = qIndex + 1;
-      const additions = [message("assistant", acknowledgment(qIndex, answer.trim(), turn.level))];
-      additions.push(message("assistant", next < 4 ? QUESTIONS[next] : "Here’s what I’ve noted so far."));
+      const nextPrompt = next < 4 ? QUESTIONS[next] : "Here’s what I’ve noted so far.";
+      const calmPacing = calmModeActive || turn.calm_mode_active;
+      const additions = turn.intent === "skip_question"
+        ? [message("assistant", `${turn.assistant_reply} ${nextPrompt}`)]
+        : calmPacing
+          ? [message("assistant", `${acknowledgment(qIndex, displayedAnswer, turn.level)} ${nextPrompt}`)]
+          : [message("assistant", acknowledgment(qIndex, displayedAnswer, turn.level)), message("assistant", nextPrompt)];
       setMessages((current) => [...current, ...additions]); setQIndex(next);
     } catch (error) { setProviderError(error instanceof ApiError ? error : new ApiError("assistant_unavailable", "The assistant is temporarily unavailable.", true)); }
     finally { setTyping(false); }
   };
   const onSubmit = (event: FormEvent) => { event.preventDefault(); void submit(draft); };
 
-  return <section className={styles.chatScreen} data-screen-label="Chat assessment"><div className={styles.intro}><h1>Let’s get you set up</h1><p>A few questions, one at a time. You can pause whenever you like.</p></div><div className={styles.transcript} ref={transcript} aria-live="polite">
+  return <section className={styles.chatScreen} data-screen-label="Chat assessment"><div className={styles.intro}><h1>Let’s get you set up</h1><p>{calmModeActive ? "We’ll keep this to one small step at a time. You can pause and return whenever you need." : "A few questions, one at a time. You can pause whenever you like."}</p>{calmModeActive && <div className={styles.calmStatus}>Gentle pace is on</div>}</div><div className={styles.transcript} ref={transcript} aria-live="polite">
     {messages.map((item) => <div key={item.id} className={`${styles.bubble} ${styles[item.speaker]}`}>{item.text}</div>)}
     {typing && <div className={`${styles.bubble} ${styles.assistant} ${styles.typing}`} aria-label="Wren is typing"><i /><i /><i /></div>}
     {qIndex === 4 && <AssessmentCard assessment={assessment} />}
-    {providerError && <div className={styles.warningCard} role="alert"><b>Assistant unavailable</b><p>I can’t reach the assistant service right now. Your answers are safe — you can retry in a moment, or continue with a standard form and finish the same way.</p><div><button className={styles.amberButton} onClick={() => void submit(messages.filter((item) => item.speaker === "user").at(-1)?.text ?? draft)}>Retry</button><button className={styles.primaryButton} onClick={onContinue}>Continue with the form</button></div></div>}
+    {providerError && <div className={styles.warningCard} role="alert"><b>Assistant unavailable</b><p>I can’t reach the assistant service right now. Your answers are safe — you can retry in a moment, or continue with a standard form and finish the same way.</p><div><button className={styles.amberButton} onClick={() => lastAttempt && void submit(lastAttempt.answer, lastAttempt.skip)}>Retry</button><button className={styles.primaryButton} onClick={onContinue}>Continue with the form</button></div></div>}
   </div><div className={styles.chatControls}>
     {qIndex < 4 && CHIPS[qIndex] && !typing && <div className={styles.chips}>{CHIPS[qIndex].map((chip) => <button key={chip} onClick={() => void submit(chip)}>{chip}</button>)}</div>}
-    {qIndex === 4 ? <div className={styles.chips}><button onClick={onContinue}>Continue to my details →</button></div> : <><form className={styles.chatInput} onSubmit={onSubmit}><label className={styles.srOnly} htmlFor="chat-answer">Your answer</label><input id="chat-answer" value={draft} onChange={(event) => setDraft(event.target.value)} disabled={typing} placeholder={qIndex === 0 ? "Type your name…" : "Or type a question…"} /><button disabled={typing || !draft.trim()}>Send</button></form><label className={styles.calmToggle}><input type="checkbox" checked={calmMode} onChange={(event) => setCalmMode(event.target.checked)} /> Keep the gentler, one-step-at-a-time pace</label></>}
+    {qIndex === 4 ? <div className={styles.chips}><button onClick={onContinue}>Continue to my details →</button></div> : <><form className={styles.chatInput} onSubmit={onSubmit}><label className={styles.srOnly} htmlFor="chat-answer">Your answer</label><input id="chat-answer" value={draft} onChange={(event) => setDraft(event.target.value)} disabled={typing} placeholder={qIndex === 0 ? "Type your name…" : "Or type a question…"} /><button disabled={typing || !draft.trim()}>Send</button></form>{calmModeActive && <button className={styles.skipButton} onClick={() => void submit("", true)}>Skip this question</button>}</>}
   </div></section>;
 }
 
@@ -191,7 +203,7 @@ function DocumentStep({ existing, onSaved, showSupport }: { existing: Details | 
     try { const result = await api.upload(file); setFields({ full_name: result.fields.full_name ?? "", date_of_birth: result.fields.date_of_birth ?? "", address: result.fields.address ?? "" }); setSources(result.field_sources); setPhase("review"); }
     catch (caught) { setError(caught instanceof Error ? caught.message : "We couldn’t read that photo."); setPhase("failed"); showSupport("ocr"); }
   };
-  const sample = async () => { const blob = await fetch("/sample-id.png").then((response) => response.blob()); await upload(new File([blob], "sample-id.png", { type: "image/png" })); };
+  const sample = async () => { const blob = await fetch("/sample-id-realistic.png").then((response) => response.blob()); await upload(new File([blob], "sample-id-realistic.png", { type: "image/png" })); };
   const save = async () => { setError(""); try { const result = await api.saveDetails(fields, sources); setSavedDetails(result.details); setPhase("saved"); } catch (caught) { setError(caught instanceof Error ? caught.message : "Check the fields and try again."); } };
   const complete = Object.values(fields).every((value) => value.trim());
 

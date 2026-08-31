@@ -7,7 +7,7 @@ const onboarding = (step: "chat" | "details" = "chat") => ({
     step,
     status: "in_progress",
     stress_mode: "neutral",
-    calm_mode_opt_in: false,
+    calm_mode_active: false,
     assessment: {},
     details: null,
     booking: null,

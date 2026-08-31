@@ -14,7 +14,7 @@ class OnboardingSession < ApplicationRecord
       step: step,
       status: status,
       stress_mode: stress_mode,
-      calm_mode_opt_in: calm_mode_opt_in,
+      calm_mode_active: calm_mode_active,
       assessment: assessment,
       details: document_detail&.public_payload,
       booking: booking&.public_payload

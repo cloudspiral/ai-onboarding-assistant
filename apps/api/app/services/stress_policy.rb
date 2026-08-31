@@ -11,8 +11,8 @@ class StressPolicy
 
   def self.explicit_level(text)
     return "urgent" if text.match?(URGENT)
-    return "neutral" if text.match?(UPLOAD_COMPLAINT)
     return "elevated" if text.match?(ELEVATED)
+    return "neutral" if text.match?(UPLOAD_COMPLAINT)
 
     nil
   end
