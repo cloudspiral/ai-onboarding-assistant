@@ -28,9 +28,11 @@ RSpec.describe "Bookings", type: :request do
     expect(Booking.where(appointment_slot: slot).count).to eq(1)
   end
 
-  it "shows only the next nine future slots and rejects a past booking" do
+  it "shows only the next nine available future slots and rejects a past booking" do
     past = AppointmentSlot.create!(starts_at: 1.hour.ago)
     future = 10.times.map { |index| AppointmentSlot.create!(starts_at: (index + 1).hours.from_now) }
+    booked_session = OnboardingSession.create!(user_id: SecureRandom.uuid)
+    Booking.create!(onboarding_session: booked_session, appointment_slot: future.first, reference: "HB-9001")
     user_id = SecureRandom.uuid
 
     get "/api/appointment_slots", headers: { "X-Demo-User-Id" => user_id }
@@ -39,7 +41,8 @@ RSpec.describe "Bookings", type: :request do
     payload = JSON.parse(response.body).fetch("slots")
     expect(payload.length).to eq(9)
     expect(payload.pluck("id")).not_to include(past.id)
-    expect(payload.pluck("id")).to eq(future.first(9).map(&:id))
+    expect(payload.pluck("id")).to eq(future.drop(1).map(&:id))
+    expect(payload).to all(include("available" => true))
 
     post "/api/booking", params: { appointment_slot_id: past.id }, headers: { "X-Demo-User-Id" => user_id }, as: :json
     expect(response).to have_http_status(:unprocessable_content)
