@@ -6,5 +6,5 @@ set calm_mode_active = calm_mode_opt_in
 where calm_mode_opt_in = true;
 
 insert into public.schema_migrations(version)
-values ('20260820000005')
+values ('20260820000003')
 on conflict do nothing;
