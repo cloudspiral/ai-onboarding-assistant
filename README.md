@@ -4,7 +4,7 @@ Harbor is a privacy-conscious onboarding flow for sensitive services. A Next.js 
 
 ## Live demo
 
-- Application: [https://web-production-42c85.up.railway.app](https://web-production-42c85.up.railway.app)
+- Application: [https://harbor-onboarding.up.railway.app](https://harbor-onboarding.up.railway.app)
 - API health: [https://api-production-21140.up.railway.app/api/health](https://api-production-21140.up.railway.app/api/health)
 - Supabase project: `wnjfusxtrxyrjfvhjnxh` (dedicated to this application)
 
